@@ -1,0 +1,1 @@
+(()=>{"use strict";const e={defaultCurrentWeather:()=>{(e=>{fetch(e,{mode:"cors"}).then((function(e){return e.json()})).then((function(e){console.log(e)}))})("api.weatherapi.com/v1?key=729e44ee64834065836160427230104?q=auto:ip")}};document.addEventListener("DOMContentLoaded",e.defaultCurrentWeather)})();
