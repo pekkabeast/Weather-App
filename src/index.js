@@ -1,3 +1,3 @@
-import { weatherApi } from "./weather";
+import { weatherDisplay } from "./UI";
 
-document.addEventListener("DOMContentLoaded", weatherApi.defaultCurrentWeather);
+document.addEventListener("DOMContentLoaded", weatherDisplay);

@@ -1,10 +1,14 @@
 //Function to make API call
 
 const weatherApi = (() => {
-  const apiURLHandler = (search) => {
-    let baseURL = "api.weatherapi.com/v1?key=729e44ee64834065836160427230104";
-    let finalURL = baseURL + "?q=" + search;
-    return finalURL;
+  const apiURLHandler = (search, time) => {
+    let baseURL = "https://api.weatherapi.com/v1/";
+    let apiKey = "key=729e44ee64834065836160427230104";
+    if ((time = "current")) {
+      baseURL += "current.json?" + apiKey + "&q=" + search;
+    }
+
+    return baseURL;
   };
 
   const currentWeather = (location) => {};
@@ -12,19 +16,24 @@ const weatherApi = (() => {
   const defaultCurrentWeather = () => {
     let defaultIPLookup = "auto:ip";
     const finalURL = apiURLHandler(defaultIPLookup);
-    apiLookup(finalURL);
+    console.log(finalURL);
+    let data = apiLookup(finalURL);
+
+    return data;
   };
 
   const locationSearchHandler = () => {};
 
   const apiLookup = (finalURL) => {
-    fetch(finalURL, { mode: "cors" })
+    const data = fetch(finalURL, { mode: "cors" })
       .then(function (response) {
         return response.json();
       })
-      .then(function (response) {
-        console.log(response);
+      .then((response) => {
+        return response;
       });
+
+    return data;
   };
 
   return {
