@@ -12,6 +12,7 @@ const weatherTileDisplay = (async () => {
   tileTime.textContent =
     time.getHours() +
     ":" +
+    (time.getMinutes() < 10 ? "0" : "") +
     time.getMinutes() +
     (time.getHours() >= 12 ? "pm" : "am");
   const tileTemp = document.createElement("div");
@@ -22,30 +23,69 @@ const weatherTileDisplay = (async () => {
   tempTemp.textContent = data.current.temp_c + "\u00B0C";
   tileTemp.append(tempIcon, tempTemp);
   const tempDesc = document.createElement("div");
+  tempDesc.classList.add("temp-desc");
   tempDesc.textContent = data.current.condition.text;
 
   weatherTile.append(tileTitle, tileTime, tileTemp, tempDesc);
 })();
 
+const updatePage = (() => {
+  const displayLocationHeader = async () => {
+    const data = await weatherApi.defaultCurrentWeather();
+    const location = document.querySelector(".location");
+
+    location.textContent = data.location.name + ", " + data.location.country;
+  };
+
+  const updateLocationHeader = async (search) => {
+    const location = document.querySelector(".location");
+    while (location.firstChild) {
+      location.removeChild(location.firstChild);
+    }
+    location.textContent = search.name + ", " + search.country;
+  };
+
+  const updateWeatherTileDisplay = async (location) => {
+    const data = await weatherApi.customCurrentWeather(location);
+
+    const tileTime = document.querySelector(".tile-time");
+    const time = new Date(data.location.localtime);
+    tileTime.textContent =
+      (time.getHours() % 12) +
+      ":" +
+      (time.getMinutes() < 10 ? "0" : "") +
+      time.getMinutes() +
+      (time.getHours() >= 12 ? "pm" : "am");
+
+    const tileTemp = document.querySelector(".temp-display");
+    while (tileTemp.firstChild) {
+      tileTemp.removeChild(tileTemp.firstChild);
+    }
+    const tempIcon = new Image(100, 100);
+    tempIcon.src = data.current.condition.icon;
+    const tempTemp = document.createElement("div");
+    tempTemp.textContent = data.current.temp_c + "\u00B0C";
+    tileTemp.append(tempIcon, tempTemp);
+
+    const tempDesc = document.querySelector(".temp-desc");
+    tempDesc.textContent = data.current.condition.text;
+  };
+
+  return {
+    displayLocationHeader,
+    updateWeatherTileDisplay,
+    updateLocationHeader,
+  };
+})();
+
 const pageDisplay = (() => {
   const initPage = () => {
-    initNavBar();
+    initHeader();
+    weatherApi.locationSearchHandler();
   };
 
   const initHeader = () => {
-    const header = document.querySelector(".header");
-  };
-
-  const initNavBar = () => {
-    const todayNav = document.createElement("div");
-    todayNav.textContent = "Today";
-    const hourlyNav = document.createElement("div");
-    hourlyNav.textContent = "Hourly";
-    const dailyNav = document.createElement("div");
-    dailyNav.textContent = "Daily";
-
-    const header = document.querySelector(".navbar");
-    header.append(todayNav, hourlyNav, dailyNav);
+    updatePage.displayLocationHeader();
   };
 
   return {
@@ -53,6 +93,4 @@ const pageDisplay = (() => {
   };
 })();
 
-const searchBar = () => {};
-
-export { weatherTileDisplay, pageDisplay };
+export { weatherTileDisplay, pageDisplay, updatePage };
