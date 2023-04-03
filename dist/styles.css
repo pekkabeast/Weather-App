@@ -1,0 +1,40 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: #0f172a;
+}
+
+.navbar {
+  height: 40px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.main {
+  height: 100%;
+  padding: 1rem;
+  background-color: #e2e8f0;
+}
+
+.weather-tile {
+  background-color: white;
+  padding: 1rem;
+  font-size: 1rem;
+}
+
+.tile-title {
+  font-size: 1rem;
+}
+
+.temp-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

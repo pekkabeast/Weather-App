@@ -1,3 +1,4 @@
-import { weatherDisplay } from "./UI";
+import { weatherTileDisplay, pageDisplay } from "./UI";
 
-document.addEventListener("DOMContentLoaded", weatherDisplay);
+document.addEventListener("DOMContentLoaded", weatherTileDisplay);
+document.addEventListener("DOMContentLoaded", pageDisplay.initPage);
