@@ -50,17 +50,45 @@ const weatherApi = (() => {
 
   const locationSearchHandler = () => {
     const form = document.getElementById("customLocation");
+
+    let inputSearch = document.getElementById("searchbar");
+    inputSearch.addEventListener("input", () => {
+      if (!inputSearch.validity.valid) {
+        inputSearch.setCustomValidity("");
+        if (document.querySelector(".error-message")) {
+          form.parentElement.removeChild(
+            document.querySelector(".error-message")
+          );
+        }
+      }
+    });
+
     form.addEventListener("submit", (event) => {
-      let searchTerm = document.getElementById("searchbar").value;
+      let searchTerm = inputSearch.value;
       let finalURL = searchURLHandler(searchTerm);
       let apiReturnData = searchApiVerifier(finalURL);
-      apiReturnData.then((data) => {
-        updatePage.updateWeatherTileDisplay(data[0].name);
-        updatePage.updateLocationHeader(data[0]);
-      });
+      apiReturnData
+        .then((data) => {
+          if (data.length > 0) {
+            inputSearch.setCustomValidity("");
+            updatePage.updateWeatherTileDisplay(data[0].name);
+            updatePage.updateLocationHeader(data[0]);
+          } else {
+            return Promise.reject(data);
+          }
+          form.reset();
+          event.preventDefault();
+        })
+        .catch((err) => {
+          inputSearch.setCustomValidity("Location Not Found");
+          let errMsg = document.createElement("span");
+          errMsg.classList.add("error-message");
+          errMsg.textContent = "Location Not Found";
+          form.parentElement.appendChild(errMsg);
 
+          event.preventDefault();
+        });
       event.preventDefault();
-      form.reset();
     });
   };
 

@@ -28,6 +28,7 @@ body {
 
 .searchForm {
   display: flex;
+  flex-flow: column;
 }
 
 #customLocation {
@@ -38,6 +39,7 @@ body {
   height: 24px;
   padding: 2px;
   border-radius: 5px;
+  margin: 0.2rem;
 }
 
 #searchsubmit {
@@ -48,6 +50,11 @@ body {
   top: 5px;
   right: 1px;
   cursor: pointer;
+}
+
+.error-message {
+  position: absolute;
+  font-size: 0.8rem;
 }
 
 .navbar {
